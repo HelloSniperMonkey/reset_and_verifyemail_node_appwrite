@@ -1,7 +1,10 @@
 import AppExpress from "@itznotabug/appexpress";
+import bodyParser from 'body-parser'
 import ejs from "ejs";
 const app = new AppExpress();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('ejs', ejs);
 app.static('public');
 app.views('views');
