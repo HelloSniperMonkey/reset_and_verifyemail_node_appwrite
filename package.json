@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@itznotabug/appexpress": "^1.6.4",
-    "body-parser": "^2.2.0",
     "ejs": "^3.1.10",
     "node-appwrite": "^12.0.1"
   },
