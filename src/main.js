@@ -73,23 +73,58 @@ app.get("/recovery", (req, res) => {
 
 // complete password reset post endpoint
 app.post("/reset_password", async (req, res) => {
-    console.log(req.bodyJson);
-    const { userId, secret, password, password_confirm } = req.bodyJson;
+    // Get the raw body as a string
+    let bodyRaw = req.body;
+    console.log("Raw body:", bodyRaw);
+    
+    // Parse the form data manually
+    let formData = {};
+    if (typeof bodyRaw === 'string') {
+        const params = new URLSearchParams(bodyRaw);
+        formData = Object.fromEntries(params);
+    } else {
+        formData = bodyRaw || {};
+    }
+    
+    console.log("Parsed form data:", formData);
+    
+    const { userId, secret, password, password_confirm } = formData;
+
+    if (!password || !password_confirm) {
+        return res.render("template", {
+            title: "❌ Password Reset Failed", 
+            message: "Password fields are required."
+        });
+    }
 
     if (password !== password_confirm) {
-        res.render("reset_password",{userId,secret, message:"Passwords do not match."});
+        return res.render("reset_password", {
+            userId, 
+            secret, 
+            message: "Passwords do not match."
+        });
     }
 
     if (password.length < 8) {
-        res.render("reset_password",{userId,secret, message:"Password must be at least 8 characters."});
+        return res.render("reset_password", {
+            userId, 
+            secret, 
+            message: "Password must be at least 8 characters."
+        });
     }
 
     try {
-        const result = await updateNewPassword(userId,secret,password,password_confirm); // Wait for updatePassword function to complete
+        const result = await updateNewPassword(userId, secret, password, password_confirm);
         console.log(result);
-        res.render("template",{title:"✅ Password Changed", message:"Your password was changed successfully.",});
+        res.render("template", {
+            title: "✅ Password Changed", 
+            message: "Your password was changed successfully."
+        });
     } catch (err) {
-        res.render("template",{title:"❌ Password Reset Failed", message:`⚠️ Reason : ${err.message}`,});
+        res.render("template", {
+            title: "❌ Password Reset Failed", 
+            message: `⚠️ Reason: ${err.message}`
+        });
     }
 });
 
