@@ -73,8 +73,8 @@ app.get("/recovery", (req, res) => {
 
 // complete password reset post endpoint
 app.post("/reset_password", async (req, res) => {
-    console.log(req.body);
-    const { userId, secret, password, password_confirm } = req.body;
+    console.log(req.bodyJson);
+    const { userId, secret, password, password_confirm } = req.bodyJson;
 
     if (password !== password_confirm) {
         res.render("reset_password",{userId,secret, message:"Passwords do not match."});
