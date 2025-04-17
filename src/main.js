@@ -1,3 +1,4 @@
+import {updateNewPassword,updateVerification} from "../controllers/auth_controllers.js"
 import AppExpress from "@itznotabug/appexpress";
 import ejs from "ejs";
 const app = new AppExpress();
@@ -72,6 +73,7 @@ app.get("/recovery", (req, res) => {
 
 // complete password reset post endpoint
 app.post("/reset_password", async (req, res) => {
+    log(req.body);
     const { userId, secret, password, password_confirm } = req.body;
 
     if (password !== password_confirm) {
@@ -83,7 +85,7 @@ app.post("/reset_password", async (req, res) => {
     }
 
     try {
-        const result = await  updateNewPassword(userId,secret,password,password_confirm); // Wait for updatePassword function to complete
+        const result = await updateNewPassword(userId,secret,password,password_confirm); // Wait for updatePassword function to complete
         console.log(result);
         res.render("template",{title:"✅ Password Changed", message:"Your password was changed successfully.",});
     } catch (err) {
