@@ -1,8 +1,10 @@
 import {Client,Account,ID,Functions} from "appwrite"
-
+import { configDotenv } from "dotenv";
+configDotenv();
+// Initialize the Appwrite client
 const client = new Client()
 .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
-.setProject('<YOUR-PROJECT-ID>')              // Your project ID
+.setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
 
 const account = new Account(client);
 
