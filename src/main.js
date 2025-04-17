@@ -73,7 +73,7 @@ app.get("/recovery", (req, res) => {
 
 // complete password reset post endpoint
 app.post("/reset_password", async (req, res) => {
-    log(req.body);
+    console.log(req.body);
     const { userId, secret, password, password_confirm } = req.body;
 
     if (password !== password_confirm) {
