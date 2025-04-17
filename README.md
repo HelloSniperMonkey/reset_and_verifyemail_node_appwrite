@@ -1,48 +1,27 @@
-# ⚡ Node.js Starter Function
+# Reset Password and Verify Email Node Appwrite Backend
 
-A simple starter function. Edit `src/main.js` to get started and create something awesome! 🚀
+This is the simple backend that can be used to handle reset password and email verification for appwrite very easily.
 
-## 🧰 Usage
+## ⚠ For Using
+- Add the Web Platform to your appwrite project
+- Then make sure to replace with your **APPWRITE PROJECT ID**
+with the `'<YOUR-PROJECT-ID>'` in `/controllers/auth_controller.js`.
 
-### GET /ping
+## 🔥 All Endpoints 
+|Method | Endpoint | Query | Usage
+|:--- | :--- |:---|:---|
+|GET| /  |  | Simple Home Page |
+|POST| /verify| `userId, secret`| Email verification |
+|GET| /recovery| `userId, secret`| Reset Password Page |
+|POST| /reset_password| `userId, secret, password, password_confirm `| Reset Password |
 
-- Returns a "Pong" message.
 
-**Response**
 
-Sample `200` Response:
 
-```text
-Pong
-```
+## 💻 Tech Stack
 
-### GET, POST, PUT, PATCH, DELETE /
+**Server:** Node, Express
 
-- Returns a "Learn More" JSON response.
+**Backend:** Appwrite
 
-**Response**
-
-Sample `200` Response:
-
-```json
-{
-  "motto": "Build like a team of hundreds_",
-  "learn": "https://appwrite.io/docs",
-  "connect": "https://appwrite.io/discord",
-  "getInspired": "https://builtwith.appwrite.io"
-}
-```
-
-## ⚙️ Configuration
-
-| Setting           | Value         |
-| ----------------- | ------------- |
-| Runtime           | Node (18.0)   |
-| Entrypoint        | `src/main.js` |
-| Build Commands    | `npm install` |
-| Permissions       | `any`         |
-| Timeout (Seconds) | 15            |
-
-## 🔒 Environment Variables
-
-No environment variables required.
+## 👨‍💻 Author : [@Snehasis4321](https://www.github.com/Snehasis4321)
