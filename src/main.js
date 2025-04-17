@@ -1,35 +1,65 @@
-import { Client, Users } from 'node-appwrite';
+import AppExpress from "@itznotabug/appexpress";
+import ejs from "ejs";
+const app = new AppExpress();
 
-// This Appwrite function will be executed every time your function is triggered
-export default async ({ req, res, log, error }) => {
-  // You can use the Appwrite SDK to interact with other services
-  // For this example, we're using the Users service
-  const client = new Client()
-    .setEndpoint(process.env.APPWRITE_FUNCTION_API_ENDPOINT)
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-    .setKey(req.headers['x-appwrite-key'] ?? '');
-  const users = new Users(client);
+app.engine('ejs', ejs);
+app.static('public');
+app.views('views');
+// make sure to add correct content-types.
 
-  try {
-    const response = await users.list();
-    // Log messages and errors to the Appwrite Console
-    // These logs won't be seen by your end users
-    log(`Total users: ${response.total}`);
-  } catch(err) {
-    error("Could not list users: " + err.message);
-  }
+app.get("/", (req, res) => {
+    res.render("index")
+})
 
-  // The req object contains the request data
-  if (req.path === "/ping") {
-    // Use res object to respond with text(), json(), or binary()
-    // Don't forget to return a response!
-    return res.text("Pong");
-  }
+// email veriifcation endpoint
+app.get("/verify",async(req,res)=>{
+    const {userId,secret}=req.query;
+    console.log("userId",userId);
+    console.log("secret",secret);
 
-  return res.json({
-    motto: "Build like a team of hundreds_",
-    learn: "https://appwrite.io/docs",
-    connect: "https://appwrite.io/discord",
-    getInspired: "https://builtwith.appwrite.io",
-  });
-};
+    try{
+        const result = await updateVerification(userId, secret); // Wait for updateVerification function to complete
+        console.log(result);
+        res.render("template",{title:"✅ Verification Complete", message:"Your email address has been verified successfully.",});
+    }
+    catch(e){
+        res.render("template",{title:"❌ Verification Failed", message:`⚠️ Reason : ${e.message}`,});
+    }
+})
+
+// password reset endpoint
+app.get("/recovery", (req, res) => {
+    const {userId,secret}=req.query;
+    console.log("userId",userId);
+    console.log("secret",secret);
+    res.render("reset_password",{userId,secret,message:""});
+});
+
+// complete password reset post endpoint
+app.post("/reset_password", async (req, res) => {
+    const { userId, secret, password, password_confirm } = req.body;
+
+    if (password !== password_confirm) {
+        res.render("reset_password",{userId,secret, message:"Passwords do not match."});
+    }
+
+    if (password.length < 8) {
+        res.render("reset_password",{userId,secret, message:"Password must be at least 8 characters."});
+    }
+
+    try {
+        const result = await  updateNewPassword(userId,secret,password,password_confirm); // Wait for updatePassword function to complete
+        console.log(result);
+        res.render("template",{title:"✅ Password Changed", message:"Your password was changed successfully.",});
+    } catch (err) {
+        res.render("template",{title:"❌ Password Reset Failed", message:`⚠️ Reason : ${err.message}`,});
+    }
+});
+
+// 404 error page
+app.get("*", (req, res) => {
+    res.render("template",{title:"❌ Error", message:"⚠️ Page not found",});
+});
+
+
+export default async (context) => await app.attach(context);
