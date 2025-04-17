@@ -3,41 +3,6 @@ import AppExpress from "@itznotabug/appexpress";
 import ejs from "ejs";
 const app = new AppExpress();
 
-// Replace the body-parser middleware with direct request handling
-// app.use((req, res, next) => {
-//   if (req.method === 'POST' && req.headers['content-type'] === 'application/json') {
-//     let body = '';
-//     req.on('data', chunk => {
-//       body += chunk.toString();
-//     });
-//     req.on('end', () => {
-//       try {
-//         req.body = JSON.parse(body);
-//       } catch (e) {
-//         req.body = {};
-//       }
-//       next();
-//     });
-//   } else if (req.method === 'POST' && req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-//     let body = '';
-//     req.on('data', chunk => {
-//       body += chunk.toString();
-//     });
-//     req.on('end', () => {
-//       try {
-//         const params = new URLSearchParams(body);
-//         req.body = Object.fromEntries(params);
-//       } catch (e) {
-//         req.body = {};
-//       }
-//       next();
-//     });
-//   } else {
-//     req.body = {};
-//     next();
-//   }
-// });
-
 app.engine('ejs', ejs);
 app.static('public');
 app.views('views');
