@@ -16,7 +16,7 @@ with the `'<YOUR-PROJECT-ID>'` in `/controllers/auth_controller.js`.
 |POST| /reset_password| `userId, secret, password, password_confirm `| Reset Password |
 
 
-
+<img width="8535" height="4380" alt="BigVGAN Audio Synthesis-2025-12-20-111413" src="https://github.com/user-attachments/assets/7b08924d-753d-463f-b565-6bd6ce694988" />
 
 ## 💻 Tech Stack
 
@@ -25,3 +25,4 @@ with the `'<YOUR-PROJECT-ID>'` in `/controllers/auth_controller.js`.
 **Backend:** Appwrite
 
 ## 👨‍💻 Author : [@Snehasis4321](https://www.github.com/Snehasis4321)
+
